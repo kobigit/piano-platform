@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+ <html>
+	 <head>
+<!-- Original URL: http://www.sqpiano.com/sqpiano.com
+Date Downloaded: 2/12/2018 11:10:03 AM !-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		 
+		 <title>Multiplayer Piano </title>
+		 <meta name="description" content="An online piano you can play alone or with others in real-time. MIDI support, 88 keys, velocity sensitive.  You can show off your skill or chat while listening to others play." />
+		 <link rel="stylesheet" href="screen.css" />
+	 </head>
+	 <body><div style="z-index: 9999; position: fixed; width: 100%; border: 0px; padding: 5px; margin: 0px; background-color: transparent;  font-size: 12pt; font-family: sans-serif;" id="web2disk_nag" onclick="javascript: document.getElementById('web2disk_nag').style.display = 'none';">
+		<div style="color: #000000; background-color:#F1F1F1; margin-left: auto; margin-right: auto; border-width: 2px; border-style: solid; width: 550px; ">
+			<div style="width: 100%; text-align: center; font-weight: bold; border: 0px; margin: 0px; padding: 0px">Hey, where did my words go? (Click to hide)</div>
+			<p>In the trial version of Web2Disk every fifth word is blanked out. 
+			To copy this site with all the words, please upgrade to the full version and copy this website again.</p>
+			<div style="width: 100%; text-align: center; font-weight: bold; border: 0px; margin: 0px; padding: 0px">
+				<a href="http://www.inspyder.com/products/Web2Disk/">Inspyder Web2Disk: The Website Downloader</a>
+			</div>
+		</div>
+	</div>
+
+		 <div id="social">
+			 <div id="like-button">
+				 <div class="fb-like" data-href="https://www.facebook.com/sqpiano/" data-layout="button_count" data-action="like" data-size="small" data-show-faces="false" data-share="true"></div>
+			 </div>
+			 <div id="inclinations"></div>
+		 </div>
+
+		 <div id="chat">
+			 <ul></ul>
+			 <input placeholder="You can chat with this thing." class="translate" maxlength="512" />
+		 </div>
+
+		 <div id="names"></div>
+
+		 <div id="piano"></div>
+
+		 <div id="cursors"></div>
+
+		 <noscript>
+			 <center>
+				 <p>
+					Multiplayer Piano is an ______, full 88-key piano you ___ play alone or with ______ in real-time.  Plug __ your MIDI keyboard, MIDI __ and out are supported.  You should be able __ hear some seriously talented _____ players performing here!  ____ in or just chat ___ listen.
+				 </p>
+				 <p>
+					For good performance, Chrome __ highly recommended.  Firefox ____ supports the requisite Web _____ API, but performance may ___ be as good.  ______ has Web MIDI.
+				 </p>
+				 <p>
+					Of course, first you ____ to  <a href="http://www.enable-javascript.com/" class="link">Enable Javascript </a> or it won't __ anything...!
+				 </p>
+			 </center>
+		 </noscript>
+
+		 <div id="bottom">
+			 <div class="relative">
+				 <div id="room">
+					 <div class="info"></div>
+					 <div class="expand"></div>
+					 <div class="more">
+						 <div class="new translate">New Room... </div>
+					 </div>
+				 </div>
+				 <div id="new-room-btn" class="ugly-button translate">New Room... </div>
+				 <div id="play-alone-btn" class="ugly-button">Play Alone </div>
+				 <div id="room-settings-btn" class="ugly-button">Room Settings </div>
+				 <div id="midi-btn" class="ugly-button translate">MIDI In/Out </div>
+				 <div id="record-btn" class="ugly-button translate">Record MP3 </div>
+				 <div id="synth-btn" class="ugly-button translate">Synth </div>
+				 <div id="status"></div>
+				 <div id="volume"></div>
+				 <div id="volume-label">volume </div>
+				 <div id="quota">
+					 <div class="value"></div>
+				 </div>
+			 </div>
+		 </div>
+
+		 <div id="modal">
+			 <div class="bg"></div>
+			 <div id="modals">
+				 <div id="new-room" class="dialog">
+					 <p><input type="text" name="name" placeholder="room name" class="text translate" maxlength="512" /></p>
+					 <p><label><input type="checkbox" name="visible" class="checkbox translate" checked="" />Visible (open to everyone) </label></p>
+					 <p />
+					 <button class="submit">go </button>
+				 </div>
+				 <div id="room-settings" class="dialog">
+					 <p><div class="ugly-button drop-crown">Drop crown </div></p>
+					 <p><label><input type="checkbox" name="visible" class="checkbox translate" checked="" />Visible (open to everyone) </label></p>
+					 <p />
+					 <p><label><input type="checkbox" name="chat" class="checkbox translate" checked="" />Enable Chat </label></p>
+					 <p /><label><input type="checkbox" name="crownsolo" class="checkbox" />Only Owner can Play <button class="submit">APPLY </button>
+					 <p><label>Background color:  &nbsp; <input type="color" name="color" placeholder="" maxlength="7" class="color" /></label></p>
+				 </label></div>
+				 <div id="rename" class="dialog">
+					 <p><input type="text" name="name" placeholder="My Fancy New Name" maxlength="40" class="text" /></p>
+					 <!--<p><input type="color" name="color" placeholder="" maxlength="7" class="color"/></p>-->
+					 <button class="submit">USER SET </button>
+				 </div>
+			 </div>
+		 </div>
+
+		 <script src="jquery.min.js"></script>
+		 <script src="util.js"></script>
+		 <script src="Client.js"></script>
+		 <script src="NoteQuota.js"></script>
+		 <script src="lame.min.js"></script>
+		 <script src="Color.js"></script>
+		 <!--<script src="/ebsprite.js"></script>-->
+		 <script src="script.js"></script>
+	 </body>
+ </html>
+ 

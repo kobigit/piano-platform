@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Original URL: http://www.sqpiano.com/
+    Date Downloaded: 2/12/2018 11:10:00 AM !-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>Multiplayer Piano </title>
+    <meta name="description" content="An online piano you can play alone or with others in real-time. MIDI support, 88 keys, velocity sensitive.  You can show off your skill or chat while listening to others play."
+    />
+    <link rel="stylesheet" href="home.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+
+    <link href="./css/bootstrap-slider.css" rel="stylesheet" type="text/css">
+
+    <style>
+        .ui-dialog {
+            z-index: 1000 !important;
+        }
+    </style>
+</head>
+
+<body >
+
+
+    <div class="piano_bg_full">
+        <div class="piano_head">
+            <div id="sustain">
+                <div id="sustain-btn"></div>
+                <div class="text-center piano-head-font piano-label-head">SUSTAIN</div>
+            </div>
+           
+                <div id="display-mode">
+                    <div id="mode1">
+                        <img src="./images/mode-1.png" class="image-contain">
+                    </div>
+                    <div id="mode2">
+                        <img src="./images/mode-2.png" class="image-contain">
+                    </div>
+                   
+                </div>
+                <div id="play-mode">DISPLAY MODE</div> 
+            
+
+            
+           
+            <div id="display-dir">
+                <div>
+                    <img src="./images/left-hand.png" class="display-mode-img"> LEFT
+                </div>
+                <div>
+                    <img src="./images/right-hand.png" class="display-mode-img"> RIGHT
+                </div>
+            </div>
+            <div class="level piano-head-font" style="display: inline-block">
+                <div class="display-flex">
+                        <label class="level-labels">LEVEL</label>
+                        <div class="level-dropdown">
+                            <select  class="select" id="level">
+                                <option value="easy">Easy</option>
+                            </select>
+                        </div>
+                </div>
+                <div class="display-flex level-margin">
+                        <label class="level-labels">LESSON</label>
+                        <div class="level-dropdown">
+                                <select  class="select" id="level">
+                                    <option value="easy">Freestyle</option>
+                                </select>
+                            </div>
+                        </div>            
+
+            </div>
+            <div class="piano-margin-top piano-head-font text-center" id="tempo">
+                    <div class="tempo-dropdown">
+                            <select  class="select" id="tempo-select">
+                                <option value="easy">120</option>
+                            </select>
+                        </div>
+              
+                    <!-- <input type="number" class="input-colors tempo" placeholder="120"> -->
+                <label class="piano-label-head">TEMPO</label>
+            </div>
+            <div class="piano-margin-top piano-head-font text-center" id="transpose" >
+                    <div class="tempo-dropdown">
+                            <select  class="select" id="tempo-select">
+                                <option value="easy">1</option>
+                            </select>
+                        </div>
+              
+                <!-- <input type="number" class="input-colors tempo" placeholder="120"> -->
+                <label class="piano-label-head">Transpose</label>
+            </div>
+            <div id="play-settings">
+                <div>
+                    <img src="./images/metro.png" class="play-setting-images"> METRO.
+                </div>
+                <div>
+                    <img src="./images/loop.png" class="play-setting-images"> LOOP
+                </div>
+                <div>
+                    <img src="./images/letters.png" class="play-setting-images"> LETTERS
+                </div>
+                <div>
+                    <img src="./images/fingers.png" class="play-setting-images"> FINGERS
+                </div>
+            </div>
+
+        </div>
+        <div id="social">
+            <div id="like-button">
+                <div class="fb-like" data-href="https://www.facebook.com/sqpiano/" data-layout="button_count" data-action="like" data-size="small"
+                    data-show-faces="false" data-share="true"></div>
+            </div>
+            <div id="inclinations"></div>
+        </div>
+
+        <div id="chat">
+            <ul></ul>
+            <input placeholder="You can chat with this thing." class="translate" maxlength="512" />
+        </div>
+
+        <div id="names"></div>
+
+        <img src="images/piano_key_small_blue.png" id="img_blue" style="display: none">
+        <img src="images/piano_key_small.png" id="img_black" style="display: none">
+        <img src="images/piano_key_small_shadow.png" id="img_shadow" style="display: none">
+        <img src="images/whitekey_shadow.png" id="img_whiteshadow" style="display: none">
+        <img src="images/five_line_222x153.png" id="music_note" style="display: none">
+        <img src="images/piano_key.png" id="img_key_normal" style="display: none">
+        <img src="images/piano_key_blue.png" id="img_key_normal_blue" style="display: none">
+        <img src="images/piano_key_small_shadow.png" id="img_key_small_shadow" style="display: none">
+
+        <div id="piano_wrap">
+            <div id="piano-bg">
+                <img src="./images/piano_bg1.png" class="piano-bg-img">
+                <img src="./images/piano_bg2.png" class="piano-bg-img-right">
+                <div class="piano-head-layer"></div>
+                <div id="piano"></div>
+            </div>
+            <div style="display: flex;width: 80%;margin: auto;">
+                <div class="verses" style="color: #ff643e">Verse1</div>
+                <div class="verses">Chorus1</div>
+                <div class="verses">Verse2</div>
+                <div class="verses">Chorus1</div>
+                <div class="verses">instr.</div>
+                <div class="verses">Chorus2</div>
+                <div class="verses">End</div>
+            </div>
+            <div style="width: 80%;margin: auto;margin-top: 1.5%;display: block">
+                <div id="audio-player-container">
+                    <div class="audio-progress" id="audio-progress">
+                        <div id="draggable-point" style="left:75%;position:relative;" class="draggable ui-widget-content">
+                            <div id="audio-progress-handle"></div>
+                        </div>
+                        <div id="audio-progress-bar" class="bar" style="width:75%">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="posX"></div>
+            </div>
+
+        </div>
+
+        <div id="cursors"></div>
+
+        <noscript>
+            <center>
+                <p>
+                    Multiplayer Piano is an ______, full 88-key piano you ___ play alone or with ______ in real-time. Plug __ your MIDI keyboard,
+                    MIDI __ and out are supported. You should be able __ hear some seriously talented _____ players performing
+                    here! ____ in or just chat ___ listen.
+                </p>
+                <p>
+                    For good performance, Chrome __ highly recommended. Firefox ____ supports the requisite Web _____ API, but performance may
+                    ___ be as good. ______ has Web MIDI.
+                </p>
+                <p>
+                    Of course, first you ____ to
+                    <a href="http://www.enable-javascript.com/" class="link">Enable Javascript </a> or it won't __ anything...!
+                </p>
+            </center>
+        </noscript>
+
+        <div id="bottom_bg">
+            <div id="bottom_left"></div>
+            <div id="bottom">
+                <div id="bottom_top_shine"></div>
+                <div class="relative">
+
+                    <div style="width: 60%">
+                        <div style="width: 100%;display: flex;height: 50%;">
+                            <div id="new-room-btn" class="ugly-button translate" >
+                                New Room </div>
+                            <div id="highlight" class="ugly-button translate">Set highlight</div>
+                            <div id="play-alone-btn" class="ugly-button">Play Alone </div>
+                            <div id="weakness" class="ugly-button translate">Weakness</div>
+                            <div id="record-btn" class="ugly-button translate">Record MP3 </div>
+
+                            <!-- <div id="room-settings-btn" class="ugly-button">Room Settings </div> -->
+                        </div>
+                        <div style="width: 100%;display: flex;height: 50%;">
+                            <div id="midi-btn" class="ugly-button translate">MIDI In Out </div>
+                            <div id="synth-btn" class="ugly-button translate">Synth </div>
+                            <div id="play_from_note" class="ugly-button translate">Play from file</div>
+                           
+                            <div id="test_me" class="ugly-button translate">Test Me</div>
+                            <div id="play_random" class="ugly-button translate">Random Play</div>
+                        </div>
+                    </div>
+
+                    <div style="width: 40%;display: flex">
+                        <div id="not-list-container">
+                            <input type="text" id="note-list" value="Note 1">
+                               
+                        
+                            <div id="status">
+                                <img src="./images/play.png" class="image-contain play playBtn" id="playBtn"  style="display: none">
+                                <img src="./images/pause.png" class="image-contain pause-btn">
+                            </div>
+                            <div id="on_off-btn">
+                                <img src="./images/power_btn.png" class="power-btn" style="display: none">
+                                <img src="./images/power_btn_on.jpg" class="power-btn">
+                            </div>
+                            <div class="volume">
+                                <div>
+                                    <img src="./images/speaker.png" class="vol-speaker-img">
+                                </div>
+                                <div class="vol-area">
+                                    <img src="./images/vol-down.png" class="vol-btn-img" id="volDown">
+                                    <img src="./images/vol-start.png" class=" vol-end">
+                                    <img src="./images/vol-end.png" class="vol-start">
+                                    <img src="./images/vol-up.png" class="vol-btn-img" id="volUp">
+                                </div>
+                            </div>
+                            <!-- <div id="volume">
+                                <div class='slider_bg'>
+                                    <input id="slider-tick-volume" type="text" data-slider-ticks="[0,10,20,30,40,50,60,70,80,90,100]" data-slider-ticks-snap-bounds="10"
+                                        data-slider-value="50" />
+                                </div>
+                            </div> -->
+
+                        </div>
+
+                    </div>
+                </div>
+                <div id="bottom_right"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="modal" class="modal">
+        <div class="bg"></div>
+        <div id="modals">
+            <div id="new-room" class="dialog">
+                <p>
+                    <input type="text" name="name" placeholder="Room Name" class="text translate" maxlength="512" />
+                </p>
+                <p>
+                    <label>
+                        <input type="checkbox" name="visible" class="checkbox translate" checked="" />Visible (open to everyone) </label>
+                </p>
+                <p />
+                <button class="submit">Go </button>
+            </div>
+            <div id="room-settings" class="dialog">
+                <p>
+                    <div class="ugly-button drop-crown">Drop crown </div>
+                </p>
+                <p>
+                    <label>
+                        <input type="checkbox" name="visible" class="checkbox translate" checked="" />Visible (open to everyone) </label>
+                </p>
+                <p />
+                <p>
+                    <label>
+                        <input type="checkbox" name="chat" class="checkbox translate" checked="" />Enable Chat </label>
+                </p>
+                <p />
+                <label>
+                    <input type="checkbox" name="crownsolo" class="checkbox" />Only Owner can Play
+                    <button class="submit">APPLY </button>
+                    <p>
+                        <label>Background color: &nbsp;
+                            <input type="color" name="color" placeholder="" maxlength="7" class="color" />
+                        </label>
+                    </p>
+                </label>
+            </div>
+            <div id="rename" class="dialog">
+                <p>
+                    <input type="text" name="name" placeholder="My Fancy New Name" maxlength="40" class="text" />
+                </p>
+               
+                <button class="submit">USER SET </button>
+            </div>
+        </div>
+    </div>
+    <div id="dialog-confirm" title="Select highlight" style="padding: 0.5em 0em">
+        <div id="pianos" style="text-align: center;">
+        </div>
+    </div>
+    <div id="test-confirm" title="Test me" style="padding: 0">
+        <div id="test-piano" style="text-align: center; margin-top: 1em">
+        </div>
+        <div style="display: flex;padding-left: 1em">
+            <div style="display: flex;">
+                <label>Total Tested:</label>
+                <h4>
+                    <label id="total_tested"></label>
+                </h4>
+            </div>
+            <div style="display: flex;margin-left:10px">
+                <label>Total Correct:</label>
+                <h4>
+                    <label id="total_correct"></label>
+                </h4>
+            </div>
+            <div style="display: flex;margin-left:10px">
+                <label>Correct Percentage:</label>
+                <h4>
+                    <label id="correct_percentage"></label>
+                </h4>
+            </div>
+            <div style="display: none;margin-left:10px">
+                <label>Total Score:</label>
+                <h4>
+                    <label id="mark"></label>
+                </h4>
+            </div>
+            <div style="display: flex;margin-left:10px">
+                <label>Time:</label>
+                <h4>
+                    <label id="time"></label>
+                </h4>
+            </div>
+            <div style="display: none;margin-left:10px">
+                <label>Total Correct Responses:</label>
+                <h4>
+                    <label id="total_correct_responses"></label>
+                </h4>
+            </div>
+        </div>
+    </div>
+    <div id="weakness-confirm" title="Weakness">
+        <table id="weakness-table" class="display">
+        </table>
+    </div>
+    <div id="dialog-test-result" title="Test Result Incorrect">
+        <div style="display: flex;">
+            <label>Nope, try again (with audio, variations as many as admin adds) for INCORRECT! </label>
+            </h4>
+        </div>
+    </div>
+
+    <!--<div id="dialog-test-result-correct" title="Test Result">-->
+    <!--<div style="display: flex;">-->
+    <!--<label>You Got it! Popup (with audio, as many as admin adds) for CORRECT! </label></h4>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div id="on-off-confirm" title="On/Off Piano COMPUTER SOUND">
+        <div id='div_on_off' style="display: flex;">
+            <p>ON&nbsp;
+                    <input type="radio" class="option-input radio" name="radio_on_off_com_sound"  id="radio_on_off_com_sound_on" value="on" checked>
+                   ON
+                  </label>
+                  <label>
+                    <input type="radio" class="option-input radio" name="radio_on_off_com_sound" id="radio_on_off_com_sound_off" value="off" />
+                   OFF
+                  </label>
+                <!-- <input value="on" type="radio" name="radio_on_off_com_sound" id="radio_on_off_com_sound_on" checked /> &nbsp;&nbsp;OFF&nbsp;
+                <input value="off" type="radio" name="radio_on_off_com_sound" id="radio_on_off_com_sound_off" /> -->
+            </p>
+        </div>
+    </div>
+
+    <script src="jquery.min.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.min.js"></script>
+    <script>
+        $("#slider-tick-volume").slider({
+            tooltip: 'hide',
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        var bShowDialog = false;
+        var bNoteFromFile = false;
+        var bRandom = false;
+        var arrNoteFromFile = [];
+        var noteFromFileTimeId = 0;
+        var nRandomCount = 0;
+        var randomTimeId = 0;
+        var autoRingNote = 0;
+        var userRingNote = 0;
+        var bAutoRinged = false;
+        var bUserInputed = false;
+        var bRight = false;
+        var bTestMe_Start = false;
+
+        var arrSelect = [];
+        var bTestMe = false;
+        var timeTracker = 0;
+        var firstTime = 0;
+        var perClickCount = 0;
+        var arrCorrect = [];
+        var arrTime = [];
+        var arrClickcntPerKeyboard = [];
+        var arrCorrectPerKeyboard = [];
+        var weakness_table = null;
+        var total_correct_responses = 0;
+
+        var Total_Correct = 0;
+        var Total_Tested = 0;
+
+        var MIDI_COMPUTER_SOUND_ON_OFF = 'on';
+        var contextMain;
+        var contextTest;
+        var contextHighlight;
+
+        var correctAudio;
+        var incorrectAudio;
+
+        var correctSoundContext;
+        var incorrectSoundContext;
+
+        var volume =39;
+
+    
+
+    </script>
+    <script src="util.js"></script>
+    <script src="Client.js"></script>
+    <script src="NoteQuota.js"></script>
+    <script src="lame.min.js"></script>
+    <script src="Color.js"></script>
+    <link rel="stylesheet" href="jquery-ui.css" />
+    <link rel="stylesheet" href="jquery.toast.css"></link>
+
+    <script src="jquery.toast.js"></script>
+    <!--<script src="/ebsprite.js"></script>-->
+    <script src="common.js"></script>
+    <script src="dialog-script.js"></script>
+    <script src="test-script.js"></script>
+    <script src="home.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript">
+        function getRandomArbitrary(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        function getAvailableCount() {
+            var selectedItem = 0;
+
+            nRandomCount = 0;
+            arrSelect = JSON.parse(localStorage.getItem("arrSelect"));
+
+            if (arrSelect !== 'undefined' && arrSelect != null) {
+                var nIndex = 0;
+                for (var i in gTest_Piano.keys) {
+
+                    if (arrSelect[nIndex] == 1) {
+                        nRandomCount++;
+                    }
+
+                    nIndex++;
+                }
+            } else {
+
+            }
+
+            return nRandomCount;
+        }
+
+        function changeName(name) {
+            var strName = name;
+
+            var nPos = strName.indexOf('s');
+
+            var strResult = "";
+            if (nPos != -1) {
+                strResult = strName.substring(0, nPos).toUpperCase();
+
+                strResult += "#";
+
+                var zeroPos = strName.indexOf('0')
+                if (zeroPos == -1) {
+                    strResult += strName.substring(nPos + 1, strName.length);
+                }
+            } else {
+                var zeroPos = strName.indexOf('0')
+                if (zeroPos == -1) {
+                    strResult = strName.substring(0, 1).toUpperCase() + strName.substring(1, strName.length);
+                } else {
+                    strResult = strName.substring(0, 1).toUpperCase();
+                }
+            }
+
+            return strResult;
+        }
+        function ringRandomKey() {
+
+            randomTimeId = setTimeout(function () {
+
+                var selectedItem = 0;
+
+                nRandomCount = 0;
+                arrSelect = JSON.parse(localStorage.getItem("arrSelect"));
+
+                if (arrSelect !== 'undefined' && arrSelect != null) {
+                    var nIndex = 0;
+                    for (var i in gTest_Piano.keys) {
+
+                        if (arrSelect[nIndex] == 1) {
+                            nRandomCount++;
+                        }
+
+                        nIndex++;
+                    }
+                } else {
+
+                }
+
+                if (nRandomCount == 0)
+                    return;
+                var random = getRandomArbitrary(0, nRandomCount);
+                var nIndex = 0;
+                var nRandomIndex = 0;
+                for (var i in gTest_Piano.keys) {
+
+
+                    if (arrSelect[nIndex] == 1) {
+                        if (nRandomIndex == random) {
+
+                            selectedItem = gTest_Piano.keys[i].note;
+
+                            break;
+                        }
+
+                        nRandomIndex++;
+                    }
+
+                    nIndex++;
+                }
+
+                if (selectedItem != 0) {
+                    if (gTest_Piano.keys.hasOwnProperty(selectedItem)) {
+
+                        test_custom_press(selectedItem, DEFAULT_VELOCITY);
+
+                        console.log(selectedItem);
+                        //gTest_Piano.audio.play(selectedItem, DEFAULT_VELOCITY, 1000, gClient.getOwnParticipant());
+                        autoRingNote = selectedItem;
+
+                        setTimeout(function () {
+                            bAutoRinged = true;
+                            perClickCount = 0;
+                            perMark = 100;
+
+                            $("#time").html("00:00:00");
+                            firstTime = Date.now();
+                            clearInterval(timeTracker);
+                            timeTracker = setInterval(function () {
+                                var now = Date.now();
+
+                                var totalSeconds = (now - firstTime) / 1000;
+
+                                hours = Math.floor(totalSeconds / 3600);
+
+                                if (hours < 10) {
+                                    hours = "0" + hours;
+                                }
+
+                                totalSeconds %= 3600;
+                                minutes = Math.floor(totalSeconds / 60);
+
+                                if (minutes < 10) {
+                                    minutes = "0" + minutes;
+                                }
+                                seconds = Math.floor(totalSeconds % 60);
+
+                                if (seconds < 10) {
+                                    seconds = "0" + seconds;
+                                }
+
+                                $("#time").html(hours + ":" + minutes + ":" + seconds);
+
+                            }, 10);
+                        }, 10);
+                    }
+                }
+            }, 1000);
+        }
+        $(document).ready(function () {
+
+            $.ajax({ method: "POST", url: "directory.php", })
+                .done(function (data) {
+
+                    if (data != null && data != 'undefined') {
+                        var html = "";
+                        for (var i = 0; i < data.length; i++) {
+                            html += "<option>" + data[i].substring(0, data[i].length - 4) + "</option>";
+                        }
+
+                        $("#note-list").html(html);
+                    }
+                });
+
+            arrCorrect = JSON.parse(localStorage.getItem("arrCorrect"));
+
+            if (arrCorrect == 'undefined' || arrCorrect == null) {
+
+                arrCorrect = [];
+                var nIndex = 0;
+                for (var i in gTest_Piano.keys) {
+
+                    arrCorrect[nIndex] = "0 %";
+
+                    nIndex++;
+                }
+            }
+
+            arrTime = JSON.parse(localStorage.getItem("arrTime"));
+
+            if (arrTime == 'undefined' || arrTime == null) {
+                arrTime = [];
+                var nIndex = 0;
+                for (var i in gTest_Piano.keys) {
+
+                    arrTime[nIndex] = "00:00:00";
+
+                    nIndex++;
+                }
+            }
+
+            /****************************************** added by zhang ********************************/
+
+            arrCorrectPerKeyboard = JSON.parse(localStorage.getItem("arrCorrectPerKeyboard"));
+
+            if (arrCorrectPerKeyboard == 'undefined' || arrCorrectPerKeyboard == null) {
+
+                arrCorrectPerKeyboard = [];
+                var nIndex = 0;
+                for (var i in gTest_Piano.keys) {
+
+                    arrCorrectPerKeyboard[nIndex] = 0;
+
+                    nIndex++;
+                }
+            }
+
+            arrClickcntPerKeyboard = JSON.parse(localStorage.getItem("arrClickcntPerKeyboard"));
+
+            if (arrClickcntPerKeyboard == 'undefined' || arrClickcntPerKeyboard == null) {
+
+                arrClickcntPerKeyboard = [];
+                var nIndex = 0;
+                for (var i in gTest_Piano.keys) {
+
+                    arrClickcntPerKeyboard[nIndex] = 0;
+
+                    nIndex++;
+                }
+            }
+            /****************************************** added by zhang ********************************/
+
+            $("#weakness").on('click', function () {
+                var dataSet = [];
+                var nIndex = 0;
+                for (var i in gPiano.keys) {
+                    var time = arrTime[nIndex];
+                    //var corrects = arrCorrect[nIndex];
+
+                    var correctPerKeyboard = arrCorrectPerKeyboard[nIndex];
+                    var totalTested = arrClickcntPerKeyboard[nIndex];
+
+                    var corrects;
+                    if (arrClickcntPerKeyboard[nIndex] == undefined || arrClickcntPerKeyboard[nIndex] == 0) {
+                        corrects = 0;
+                    } else {
+                        corrects = Math.floor(arrCorrectPerKeyboard[nIndex] / arrClickcntPerKeyboard[nIndex] * 10000) / 100;
+                    }
+
+                    var str = changeName(i);
+                    if (time === "00:00:00" && corrects === "0") {
+                        dataSet.push([str, "Unknown", "Unknown", "Unknown", "Unknown"]);
+                    } else {
+                        if (corrects !== "0") {
+                            dataSet.push([str, corrects + '%', correctPerKeyboard, totalTested, time]);
+                        } else {
+                            dataSet.push([str, corrects + '%', correctPerKeyboard, totalTested, time]);
+                        }
+                    }
+                    nIndex++;
+                }
+
+                if (weakness_table != null) {
+                    weakness_table.destroy();
+                }
+
+                weakness_table = $("#weakness-table").DataTable({
+                    data: dataSet,
+                    "paging": false,
+                    "ordering": false,
+                    columns: [
+                        { title: "Name" },
+                        { title: "Percentage" },
+                        { title: "Correct" },
+                        { title: "Total Tested" },
+                        { title: "Response Time" }
+                    ]
+                });
+
+                $("#weakness-confirm").dialog("open");
+            });
+            $("#test_me").on('click', function () {
+                if (bTestMe || bRandom || bNoteFromFile)
+                    return;
+
+                Total_Correct = 0;
+                Total_Tested = 0;
+                $("#test-confirm").dialog("open");
+
+                $('.ui-dialog-buttonpane button:contains(Stop)').html("Start");
+
+                $("#time").html("00:00:00");
+
+                clearInterval(timeTracker);
+
+                bTestMe = true;
+
+
+                $("#total_tested").html(0);
+
+                $("#total_correct").html(0);
+
+                $("#correct_percentage").html("0 %");
+
+
+                //$("#total_correct_responses").html(total_correct_responses);
+            });
+
+            $("#play_random").on('click', function () {
+                $("#play_random").css('background-color','#f77058')
+                if (bNoteFromFile == true || bTestMe == true)
+                    return;
+
+                nRandomCount = 0;
+                arrSelect = JSON.parse(localStorage.getItem("arrSelect"));
+
+                if (arrSelect !== 'undefined' && arrSelect != null) {
+                    var nIndex = 0;
+                    for (var i in gPiano.keys) {
+
+                        if (arrSelect[nIndex] == 1) {
+                            nRandomCount++;
+                        }
+
+                        nIndex++;
+                    }
+                } else {
+
+                }
+
+                if (bRandom == false) {
+                    $("#play_random").html("Stop random Play");
+
+                    if (nRandomCount > 0) {
+                        bRandom = true;
+
+                        randomTimeId = setInterval(function () {
+
+                            var selectedItem = 0;
+                            var random = getRandomArbitrary(0, nRandomCount - 1);
+                            var nIndex = 0;
+                            var nRandomIndex = 0;
+                            for (var i in gPiano.keys) {
+
+                                if (arrSelect[nIndex] == 1) {
+                                    if (nRandomIndex == random) {
+
+                                        if (gPiano.keys[i].selected == 1) {
+                                            selectedItem = gPiano.keys[i].note;
+
+                                            break;
+                                        } else {
+                                            break;
+                                        }
+                                    }
+
+                                    nRandomIndex++;
+                                }
+
+                                nIndex++;
+                            }
+
+                            if (selectedItem != 0) {
+                                if (gPiano.keys.hasOwnProperty(selectedItem)) {
+                                    custom_press(selectedItem, DEFAULT_VELOCITY);
+                                    //gPiano.play(selectedItem, DEFAULT_VELOCITY,  gClient.getOwnParticipant(),50);
+                                }
+                            }
+                        }, 1000);
+                    } else {
+                        $("#play_random").html("Random Play");
+                        return;
+                    }
+                } else {
+                    bRandom = false;
+
+                    clearInterval(randomTimeId);
+
+                    $("#play_random").html("Random Play");
+                }
+            });
+            $("#open_note").on("click", function () {
+                $("#open_file").trigger("click");
+            });
+            $("#play_from_note").on("click", function () {
+                $("#play_from_note").css('background-color','#f77058')
+
+                if (bRandom)
+                    return;
+
+                if (bNoteFromFile == true) {
+                    bNoteFromFile = false;
+                    arrNoteFromFile = [];
+
+                    clearTimeout(noteFromFileTimeId);
+                    $("#play_from_note").html("Play from file");
+                } else {
+
+                    var fileName = $("#note-list option:selected").text();
+
+                    if (fileName == null || fileName == 'undefined')
+                        return;
+
+                    var filePath = "notes/" + fileName + ".txt";
+
+                    $.ajax({
+                        url: filePath,
+                        type: 'get',
+                        async: true,
+                        success: function (html) {
+
+                            bNoteFromFile = true;
+
+                            var json = JSON.parse(html);
+
+                            $.each(json, function (i, v) {
+
+                                noteFromFileTimeId = setTimeout(function () {
+
+                                    if (bNoteFromFile) {
+                                        var note = v.toLowerCase();
+
+                                        if (gPiano.keys.hasOwnProperty(note)) {
+                                            custom_press(note, DEFAULT_VELOCITY);
+                                        }
+
+                                        if (i == json.length - 1) {
+                                            setTimeout(function () {
+                                                bNoteFromFile = false;
+
+                                                $("#play_from_note").html("Play from file");
+                                            }, 1000);
+                                        }
+                                    }
+
+
+                                }, i * 1000);
+
+                            });
+                        }
+                    });
+
+                    $("#play_from_note").html("Stop from file");
+                }
+            });
+
+            $("#dialog-result").dialog({
+                autoOpen: false,
+                resizable: false,
+                height: "auto",
+                width: 500,
+                top: 100,
+                modal: true,
+                buttons: {
+                    "Ok": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+            $("#weakness-confirm").dialog({
+                autoOpen: false,
+                resizable: false,
+                height: 700,
+                width: 960,
+                top: 100,
+                modal: true,
+                buttons: {
+                    "Ok": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            $("#dialog-confirm").dialog({
+                autoOpen: false,
+                resizable: false,
+                height: "auto",
+                width: '90%',
+                top: 100,
+                modal: true,
+                buttons: {
+                    "Save": function () {
+                        var arrSelect = [];
+                        var nIndex = 0;
+                        for (var i in gDialog_Piano.keys) {
+                            arrSelect[nIndex] = gDialog_Piano.keys[i].selected;
+
+                            nIndex++;
+                        }
+
+                        localStorage.setItem("arrSelect", JSON.stringify(arrSelect));
+
+                        $(this).dialog("close");
+
+                        bShowDialog = false;
+                        captureKeyboard();
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                        bShowDialog = false;
+
+                        captureKeyboard();
+                    }
+                }
+            });
+            $("#test-confirm").dialog({
+                autoOpen: false,
+                resizable: false,
+                height: "auto",
+                width: '90%',
+                top: 100,
+                modal: true,
+                buttons: {
+                    "Start": function () {
+                        if (getAvailableCount() == 0) {
+                            return;
+                        }
+
+
+                        //$("#total_correct_responses").html(total_correct_responses);
+
+                        if (bTestMe_Start == true) {
+                            bTestMe_Start = false;
+
+                            $('.ui-dialog-buttonpane button:contains(Stop)').html("Start");
+
+                            bAutoRinged = false;
+                            bUserInputed = false;
+
+                            clearInterval(timeTracker);
+
+                            localStorage.setItem("arrTime", JSON.stringify(arrTime));
+                            localStorage.setItem("arrCorrect", JSON.stringify(arrCorrect));
+                            localStorage.setItem("arrClickcntPerKeyboard", JSON.stringify(arrClickcntPerKeyboard));
+                            localStorage.setItem("arrCorrectPerKeyboard", JSON.stringify(arrCorrectPerKeyboard));
+                        } else {
+                            bTestMe_Start = true;
+
+                            perClickCount = 0;
+
+                            $("#time").html("00:00:00");
+
+
+                            $("#total_tested").html(0);
+
+                            $("#total_correct").html(0);
+
+                            $("#correct_percentage").html("0 %");
+
+                            Total_Correct = 0;
+                            Total_Tested = 0;
+
+                            $('.ui-dialog-buttonpane button:contains(Start)').html("Stop");
+
+                            ringRandomKey();
+                        }
+
+
+                    },
+                    "Close": function () {
+                        $(this).dialog("close");
+
+                        bTestMe = false;
+                        bAutoRinged = false;
+                        bTestMe_Start = false;
+                        bUserInputed = false;
+                        clearInterval(timeTracker);
+
+                        localStorage.setItem("arrTime", JSON.stringify(arrTime));
+                        localStorage.setItem("arrCorrect", JSON.stringify(arrCorrect));
+                        localStorage.setItem("arrClickcntPerKeyboard", JSON.stringify(arrClickcntPerKeyboard));
+                        localStorage.setItem("arrCorrectPerKeyboard", JSON.stringify(arrCorrectPerKeyboard));
+
+                        captureKeyboard();
+                    }
+                }
+            });
+
+            $("#dialog-test-result").dialog({
+                autoOpen: false,
+                resizable: false,
+                height: "auto",
+                width: 640,
+                top: 100,
+                modal: true,
+                beforeClose: function () {
+                    $("div[aria-describedby='test-confirm']").removeClass('disableddialog');
+                },
+                buttons: {
+                    "Play": function () {
+                        test_custom_press(autoRingNote, DEFAULT_VELOCITY);
+                    },
+
+                    "Skip": function () {
+
+                        // added ringRandomKey when user continue in Incorrect popup --- Zhang  2018.3.15
+                        if (!gClient.preventsPlaying() && gNoteQuota.spend(1)) {
+
+                            gHeldNotes[userRingNote] = true;
+                            gSustainedNotes[userRingNote] = true;
+                            //gTest_Piano.play(id, vol !== undefined ? vol : DEFAULT_VELOCITY, gClient.getOwnParticipant(), 0);
+
+                            if (bTestMe_Start == true) {
+                                setTimeout(function () {
+                                    ringRandomKey();
+                                }, 100);
+                            }
+                        }
+
+                        $(this).dialog("close");
+                        $("div[aria-describedby='test-confirm']").removeClass('disableddialog');
+                    }
+                }
+            });
+
+            //                $("#dialog-test-result-correct").dialog({
+            //                    autoOpen: false,
+            //                    resizable: false,
+            //                    height: "auto",
+            //                    width: 640,
+            //                    top:100,
+            //                    modal: true,
+            //                    buttons: {
+            //                        "Continue": function() {
+            //                            if (!gClient.preventsPlaying() && gNoteQuota.spend(1)) {
+            //
+            //                                gHeldNotes[userRingNote] = true;
+            //                                gSustainedNotes[userRingNote] = true;
+            //                                //gTest_Piano.play(id, vol !== undefined ? vol : DEFAULT_VELOCITY, gClient.getOwnParticipant(), 0);
+            //
+            //                                if(bTestMe_Start == true)
+            //                                {
+            //                                    setTimeout(function(){
+            //                                        ringRandomKey();
+            //                                    }, 2000);
+            //                                }
+            //                            }
+            //
+            //                            $( this ).dialog( "close" );
+            //                        }
+            //                    }
+            //                });
+
+            $("#on-off-confirm").dialog({
+                autoOpen: false,
+                resizable: false,
+                height: "auto",
+                width: 640,
+                top: 100,
+                modal: true,
+                buttons: {
+                    "OK": function () {
+                        MIDI_COMPUTER_SOUND_ON_OFF = document.querySelector('input[name=radio_on_off_com_sound]:checked').value;
+
+                        if (MIDI_COMPUTER_SOUND_ON_OFF == 'off') {
+                            contextMain.suspend();
+                            contextTest.suspend();
+                            contextHighlight.suspend();
+                        } else {
+                            contextMain.resume();
+                            contextTest.resume();
+                            contextHighlight.resume();
+                        }
+                        $(this).dialog("close");
+                    }
+                    //                        ,
+                    //                        "Cancel": function() {
+                    //
+                    //                            if(MIDI_COMPUTER_SOUND_ON_OFF == 'off') {
+                    //                                $('#radio_on_off_com_sound_off').checked = true;
+                    //                                $('#radio_on_off_com_sound_on').checked = false;
+                    //							} else {
+                    //                                $('#radio_on_off_com_sound_on').checked = true;
+                    //                                $('#radio_on_off_com_sound_off').checked = false;
+                    //							}
+                    //
+                    //                            $( this ).dialog( "close" );
+                    //                        }
+                }
+            });
+
+            $("#on_off-btn").on('click', function () {
+
+                $('#on-off-confirm').dialog("open");
+            });
+
+            $("#highlight").on('click', function () {
+
+                if (bNoteFromFile || bTestMe || bRandom)
+                    return;
+                bShowDialog = true;
+
+
+                $("#dialog-confirm").dialog("open");
+                captureKeyboard();
+            });
+
+            captureKeyboard();
+        });
+
+       // Added by selvamani
+
+        $('#draggable-point').draggable({
+            axis: 'x',
+            containment: "#audio-progress"
+        });
+
+        $('#draggable-point').draggable({
+            drag: function () {
+                var offset = $(this).offset();
+                var xPos = (100 * parseFloat($(this).css("left"))) / (parseFloat($(this).parent().css("width"))) + "%";
+
+                $('#audio-progress-bar').css({
+                    'width': xPos
+                });
+            }
+        });
+
+    // $("#status").click(function () {
+    //     $('img',this).toggle();
+    // });
+
+    $("#mode1").click(function(){   
+        if($(this).css('background-color')==="rgb(24, 169, 180)" ){    
+            $("#mode1").css('background-color','transparent');
+            $("#mode2").css("background-color", "rgb(24, 169, 180)");
+        }else{
+            $("#mode2").css('background-color','transparent');
+            $("#mode1").css("background-color", "rgb(24, 169, 180)");
+        }
+    })
+    $("#mode2").click(function(){
+        if($(this).css('background-color')==="rgb(24, 169, 180)" ){
+            $("#mode2").css('background-color','transparent');
+            $("#mode1").css("background-color", "rgb(24, 169, 180)");
+        }else{
+            $("#mode1").css('background-color','transparent');
+            $("#mode2").css("background-color", "rgb(24, 169, 180)");
+        }
+    })
+
+    $("#volDown").click(function(){
+        if(volume){
+            volume=volume-13;
+            localStorage.setItem('volume',volume*0.076)
+        }
+       
+        $(".vol-start").css('clip', 'rect(0px, '+ volume + 'px, 260px, 0px)');
+    });
+    $("#volUp").click(function(){
+        if(volume<130){
+            volume=volume+13;
+            localStorage.setItem('volume',volume*0.076)
+        }
+        
+        $(".vol-start").css('clip', 'rect(0px, '+ volume + 'px, 260px, 0px)');
+    })
+
+// $(".playBtn").click(function(){
+//     alert("working");
+//     if (!$(this).hasClass('play')) {
+//         $(this).attr('src', './images/play.png');
+//         $(this).addClass('play')
+         
+//     } else  {
+//         $(this).attr('src', './images/pause.png');
+//         $(this).removeClass('play')
+      
+//     }
+// });
+localStorage.setItem('volume',0.3)
+    </script>
+</body>
+
+</html>
